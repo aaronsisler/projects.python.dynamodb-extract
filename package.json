@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "p1rebuild": "rm -rf ./dist && rm -rf bundle.zip",
     "build": "python build.py",
     "deploy:beta": "python build.py && sls deploy --config=serverless.beta.yml",
     "domain:beta": "sls create_domain --config=serverless.beta.yml"
