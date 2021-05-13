@@ -1,0 +1,44 @@
+service: python-add-two-integers
+
+provider:
+  name: aws
+  runtime: python3.8
+  stage: beta
+  region: us-east-1
+  role: arn:aws:iam::654918520080:role/APIG-LAMBDA-DDB
+  usagePlan:
+    quota:
+      limit: 500
+      offset: 0
+      period: MONTH
+    throttle:
+      burstLimit: 20
+      rateLimit: 10
+  environment:
+    NODE_ENV: beta
+
+functions:
+  health:
+    handler: dist/health_handler.main
+    description: Health endpoint
+    events:
+      - http:
+          path: /health
+          method: get
+  calc:
+    handler: dist/dynamodb_handler.main
+    description: Playground endpoint for boto3 library
+    events:
+      - http:
+          path: /ddb
+          method: get
+
+plugins:
+  - serverless-domain-manager
+
+custom:
+  customDomain:
+    domainName: python.otterandcow.com
+    basePath: "beta"
+    stage: beta
+    createRoute53Record: true
