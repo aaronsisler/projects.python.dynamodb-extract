@@ -44,7 +44,7 @@ def main(event, context):
 
     response = {
         "statusCode": 200,
-        "body": json.dumps(data).replace("\n", "")
+        "body": json.dumps(data).replace("\\n", "")
     }
 
     return response

@@ -1,11 +1,12 @@
-service: python-add-two-integers
+service: python-playground
 
 provider:
   name: aws
   runtime: python3.8
   stage: beta
   region: us-east-1
-  role: arn:aws:iam::654918520080:role/APIG-LAMBDA-DDB
+  iam:
+    ßrole: arn:aws:iam::654918520080:role/APIG-LAMBDA-DDB
   usagePlan:
     quota:
       limit: 500
@@ -25,7 +26,14 @@ functions:
       - http:
           path: /health
           method: get
-  calc:
+  s3-content:
+    handler: dist/s3_content_handler.main
+    description: Playground endpoint for boto3 library
+    events:
+      - http:
+          path: /s3
+          method: get
+  dynamodb:
     handler: dist/dynamodb_handler.main
     description: Playground endpoint for boto3 library
     events:

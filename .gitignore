@@ -1,3 +1,7 @@
 .idea
 dist/
 bundle.zip
+.DS_Store
+.serverless/
+bundle/
+node_modules/

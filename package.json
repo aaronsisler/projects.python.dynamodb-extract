@@ -4,11 +4,15 @@
   "description": "",
   "scripts": {
     "build": "python build.py",
-    "deploy:beta": "python build.py && sls deploy --config=serverless.beta.yml",
-    "domain:beta": "sls create_domain --config=serverless.beta.yml"
+    "deploy": "python build.py && sls deploy --config=serverless.beta.yml",
+    "domain": "sls create_domain --config=serverless.beta.yml"
   },
   "author": "Aaron Sisler",
   "license": "ISC",
-  "dependencies": {},
-  "devDependencies": {}
+  "dependencies": {
+    "serverless-domain-manager": "^5.1.0"
+  },
+  "devDependencies": {
+    "serverless": "^2.41.2"
+  }
 }

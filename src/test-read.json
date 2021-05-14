@@ -1,0 +1,9 @@
+{
+  "firstLevel": {
+    "secondLevelOne": "second-level-one-value",
+    "secondLevelTwo": "second-level-two-value",
+    "thirdLevel": {
+      "fourthLevel": "fourth-level-value"
+    }
+  }
+}
