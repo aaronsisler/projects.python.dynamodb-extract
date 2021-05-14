@@ -6,7 +6,7 @@ provider:
   stage: beta
   region: us-east-1
   iam:
-    ßrole: arn:aws:iam::654918520080:role/APIG-LAMBDA-DDB
+    role: arn:aws:iam::654918520080:role/APIG-LAMBDA-DDB
   usagePlan:
     quota:
       limit: 500
@@ -25,21 +25,28 @@ functions:
     events:
       - http:
           path: /health
-          method: get
+          method: GET
   s3-content:
     handler: dist/s3_content_handler.main
     description: Playground endpoint for boto3 library
     events:
       - http:
           path: /s3
-          method: get
+          method: GET
+  s3-create:
+    handler: dist/s3_create_handler.main
+    description: Playground endpoint for boto3 library
+    events:
+      - http:
+          path: /s3
+          method: POST
   dynamodb:
     handler: dist/dynamodb_handler.main
     description: Playground endpoint for boto3 library
     events:
       - http:
           path: /ddb
-          method: get
+          method: GET
 
 plugins:
   - serverless-domain-manager
