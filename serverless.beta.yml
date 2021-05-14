@@ -46,7 +46,7 @@ functions:
     events:
       - http:
           path: /ddb
-          method: GET
+          method: POST
 
 plugins:
   - serverless-domain-manager

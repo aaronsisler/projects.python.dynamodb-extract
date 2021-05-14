@@ -15,18 +15,24 @@ def recursive_dive(json_dict):
 def main(event, context):
     data = None
     client = boto3.client('dynamodb')
+    table_arn = "arn:aws:dynamodb:us-east-1:654918520080:table/JAVA_MAPPER_TEST"
+    bucket_name = "eandb-dynamodb-extract"
 
     try:
-        print("Completed Download")
+        response = client.export_table_to_point_in_time(
+            TableArn=table_arn,
+            S3Bucket=bucket_name,
+            ExportFormat='DYNAMODB_JSON'
+        )
+        print("Completed Export")
+        data = "Export Success"
     except botocore.exceptions.ClientError as e:
-        if e.response['Error']['Code'] == "404":
-            print("The object does not exist.")
-        else:
-            print("Failed")
+        print("Failed")
+        data = "Export failed"
 
     response = {
         "statusCode": 200,
-        "body": json.dumps(data).replace("\n", "")
+        "body": json.dumps(data)
     }
 
     return response
