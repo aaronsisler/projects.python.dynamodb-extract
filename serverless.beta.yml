@@ -31,7 +31,7 @@ functions:
     description: Playground endpoint for boto3 library
     events:
       - http:
-          path: /s3
+          path: /s3/content
           method: GET
   s3-create:
     handler: dist/s3_create_handler.main
@@ -39,6 +39,25 @@ functions:
     events:
       - http:
           path: /s3
+          method: POST
+  s3-trigger:
+    handler: dist/s3_trigger_handler.main
+    description: Playground endpoint for boto3 library
+    events:
+      - s3:
+          bucket: eandb-dynamodb-extract
+          event: s3:ObjectCreated:*
+          existing: true
+          rules:
+            - prefix: AWSDynamoDB/
+            - suffix: .json.gz
+  s3-retrieve:
+    handler: dist/s3_retrieve_handler.main
+    description: Playground endpoint for boto3 library
+    timeout: 60
+    events:
+      - http:
+          path: /s3/retrieve
           method: POST
   dynamodb:
     handler: dist/dynamodb_handler.main

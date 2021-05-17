@@ -3,30 +3,28 @@ import boto3
 import botocore
 
 
-def recursive_dive(json_dict):
-    for key in json_dict:
-        print("Key:", key)
-        if type(json_dict[key]) == dict:
-            recursive_dive(json_dict[key])
-        else:
-            print("Value:", json_dict[key])
-
-
 def main(event, context):
     data = None
+    s3_bucket_name = "eandb-dynamodb-extract"
     client = boto3.client('dynamodb')
-    table_arn = "arn:aws:dynamodb:us-east-1:654918520080:table/JAVA_MAPPER_TEST"
-    bucket_name = "eandb-dynamodb-extract"
 
     try:
         response = client.export_table_to_point_in_time(
-            TableArn=table_arn,
-            S3Bucket=bucket_name,
+            TableArn="arn:aws:dynamodb:us-east-1:654918520080:table/JAVA_MAPPER_TEST",
+            S3Bucket=s3_bucket_name,
             ExportFormat='DYNAMODB_JSON'
         )
+        print(response)
+        export_arn = response['ExportDescription']['ExportArn']
+        export_folder_name = export_arn.partition("/export/")[2]
+        print(export_folder_name)
         print("Completed Export")
-        data = "Export Success"
+        data = {
+            "export_folder_name": f'AWSDynamoDB/{export_folder_name}/data',
+            "s3_bucket_name": s3_bucket_name
+        }
     except botocore.exceptions.ClientError as e:
+        print(e)
         print("Failed")
         data = "Export failed"
 
