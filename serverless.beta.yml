@@ -19,6 +19,9 @@ provider:
     NODE_ENV: beta
 
 functions:
+  authorizer:
+    handler: dist/auth_handler.main
+    description: Lambda that checks token passed in Authorization header
   health:
     handler: dist/health_handler.main
     description: Health endpoint
@@ -26,6 +29,18 @@ functions:
       - http:
           path: /health
           method: GET
+  health-auth:
+    handler: dist/health_handler.main
+    description: Health endpoint
+    events:
+      - http:
+          path: /health-auth
+          method: GET
+          authorizer:
+            name: authorizer
+            resultTtlInSeconds: 0
+            identitySource: method.request.header.Authorization
+            type: token
   s3-content:
     handler: dist/s3_content_handler.main
     description: Playground endpoint for boto3 library
